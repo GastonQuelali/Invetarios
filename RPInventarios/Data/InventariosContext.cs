@@ -9,7 +9,7 @@ namespace RPInventarios.Data;
 
 public class InventariosContext : DbContext
 {
-    public InventariosContext (DbContextOptions<InventariosContext> options)
+    public InventariosContext(DbContextOptions<InventariosContext> options)
         : base(options)
     {
     }
@@ -30,10 +30,22 @@ public class InventariosContext : DbContext
         modelBuilder.Entity<Producto>().ToTable("Producto");
         modelBuilder.Entity<Usuario>().ToTable("Usuario");
         modelBuilder.Entity<Categoria>().ToTable("Categoria");
-        modelBuilder.Entity<ProductoCategoria>().ToTable("ProductoCategoria");
+        modelBuilder.Entity<ProductoCategoria>(entity =>
+        {
+            entity.ToTable("ProductoCategoria");
 
-        modelBuilder.Entity<ProductoCategoria>()
-            .HasKey(pc => new { pc.ProductoId, pc.CategoriaId });   
+            entity.HasKey(pc => new { pc.ProductoId, pc.CategoriaId });
+
+            entity.HasOne(pc => pc.Producto)
+                .WithMany(p => p.ProductoCategorias)
+                .HasForeignKey(pc => pc.ProductoId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(pc => pc.Categoria)
+                .WithMany(c => c.ProductoCategorias)
+                .HasForeignKey(pc => pc.CategoriaId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
 
         base.OnModelCreating(modelBuilder);
     }
