@@ -39,3 +39,32 @@ https://www.udemy.com/course/razor-pages-la-guia-inicial/
     - Carga de foto en formato binario
     - Guarda de una imágen en un directorio de la aplicación
     - Vista previa de las vistas
+
+# RUN
+Para levantar el docker compose en la ubicacion del proyecto
+```
+docker-compose up -d
+```
+o
+```
+docker start sqlserver_blog
+```
+Para ingresar al plugin del contenedor
+```
+sqlcmd -S localhost -U SA -P "********24**"
+```
+
+```
+SELECT name FROM sys.databases;
+GO
+```
+Otra opcion es utilizar directamente este comando para visualizar que el manejador de base de datos esta 
+
+
+```
+docker exec -it sqlserver_blog /opt/mssql-tools18/bin/sqlcmd -S localhost -U SA -P "********24**" -C -d master -Q "SELECT name FROM sys.databases;"
+```
+
+## Cuenta
+    - **Username:** `gquelali`
+    - **Password:** `123456`
